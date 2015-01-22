@@ -1,0 +1,66 @@
+on script load:
+	execute server command "/gamerule doFireTick false"
+
+#=========={ BLOKADA KOPANIA }==========#
+on click:
+	event-block is stone button:
+		set event-block to air
+		player can hold 1 stone button named "&7Kamień":
+			give player 1 stone button named "&7Kamień"
+	else if event-block is log or fence:
+		stop
+	else if event-block is leaves:
+		stop	
+	else:
+		cancel event
+
+#=========={ DŁUŻSZE ŚCINANIE, POWITANIE }==========#
+on join:
+	if player doesn't have 1152 gray glass pane:
+		remove all gray glass panes from player
+		open chest with 1 rows named "menu" to player
+		wait 1 tick
+		loop 36 times:
+			add 1 to {_slot}
+			format slot {_slot}-1 of player with gray glass pane named "" to be unstealable
+		close player's inventory
+	apply Mining Fatigue 2 to player for 9999999999999 days
+	execute server command "/title %player% title ""&2The Forest"""
+	execute server command "/title %player% subtitle ""&a%{dnimc.%player%}%"""
+
+#========={ DROPIENIE DREWNA }==========#
+on break:
+	event-block is log:
+		cancel event
+			loop blocks above event-block:
+				{budowla::%location of loop-block%} ia not set:
+					loop-block is log:
+						set loop-block to air
+						drop 1 log at location of loop-block
+						loop blocks in radius 2 of loop-block:
+							if loop-block-2 is leaves:
+								set loop-block to air
+#=========={ DROPIENIE PATYKÓW }==========#
+	event-block is fence:
+		cancel event
+		{budowla::%location of event-block%} is not set:
+			set event-block to air
+			drop 1 stick at event-location
+		loop blocks above event-block:
+			{budowla::%location of loop-block%} is not set:
+				loop-block is fence:
+					set loop-block to air
+					drop 1 stick at location of loop-block
+				loop-block is leaves:
+					set loop-block to air
+					drop 1 leaves at location of loop-block
+
+on craft:
+	cancel event
+
+on inventory click:
+	set {_s} to slot
+	set {_i} to slot {_s} of player
+	{_i} is glass pane:
+		cancel event
+#		send "&cTe sloty są zablokowane!"
