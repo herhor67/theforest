@@ -33,7 +33,7 @@ on break:
 	event-block is log:
 		cancel event
 			loop blocks above event-block:
-				{budowla::%location of loop-block%} ia not set:
+				{budowla::%location of loop-block%} is not set:
 					loop-block is log:
 						set loop-block to air
 						drop 1 log at location of loop-block
