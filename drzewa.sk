@@ -1,5 +1,28 @@
 on break:
 	event-block is log:
+		loop blocks above event-block:
+			{budowla::%location of loop-block%} is not set:
+				loop-block is log:
+					loop blocks in radius 3 of loop-block:
+						if loop-block-2 is leaves:
+							set loop-block-2 to air
+					set {_top} to loop-block
+					add 1 to {_count}
+#--------------------#
+				loop {_count} times:
+					spawn falling block of log at location of {_top}
+					delete block at location of {_top}
+					wait 1 tick
+					set {_v1} to direction of last spawned entity
+					set y of {_v1} to 0
+					set {_v1} to vector {_v1} * 0.3
+					add {_v1} to velocity of last spawned entity
+					wait 2 ticks
+					remove 1 from y-coordinate of {_top}
+
+
+on break:
+	event-block is log:
 		loop blocks above location 1 meters above event-block:
 			{budowla::%location of loop-block%} is not set:
 				loop-block is log:
